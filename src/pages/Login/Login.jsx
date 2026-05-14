@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import * as S from "./Login.styled";
+import * as S from "../../components/styles/shared.styled";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { signIn } from "../../servives/auth";
@@ -62,9 +62,9 @@ const Login = () => {
   const errorMessage = apiError || getValidationMessage();
 
   return (
-    <S.Container>
+    <S.FormContainer>
       <S.Form onSubmit={handleSubmit}>
-        <h2 style={{ textAlign: "center", marginBottom: 24 }}>Вход</h2>
+        <S.FormTitle>Вход</S.FormTitle>
         <S.Input
           type="email"
           placeholder="Эл. почта"
@@ -84,14 +84,14 @@ const Login = () => {
           {loading ? "Вход..." : "Войти"}
         </S.Button>
 
-        <S.P>
+        <S.HelperText>
           Нужно зарегистрироваться?{" "}
           <S.StyledLink onClick={() => navigate("/register")}>
             Регистрируйтесь здесь
           </S.StyledLink>
-        </S.P>
+        </S.HelperText>
       </S.Form>
-    </S.Container>
+    </S.FormContainer>
   );
 };
 

@@ -1,13 +1,26 @@
 import React from "react";
 import * as S from "./Expenses.styled";
+import {
+  Input as BaseInput,
+  Button as BaseButton,
+  PageTitle,
+} from "../../components/styles/shared.styled";
+import styled from "styled-components";
 
+export const StyledInput = styled(BaseInput)`
+  margin-bottom: 24px;
+`;
+
+export const AddButton = styled(BaseButton)`
+  margin: 0;
+`;
 const Expenses = () => {
   return (
     <S.ExpensesWrapper>
       <div className="container">
-        <S.ExpensesTitle>
+        <PageTitle>
           <h4>Мои расходы</h4>
-        </S.ExpensesTitle>
+        </PageTitle>
 
         <S.ExpensesBlock>
           <S.ExpenseTable>
@@ -54,7 +67,7 @@ const Expenses = () => {
             <S.SmallHeadline>
               <p>Описание</p>
             </S.SmallHeadline>
-            <S.DescriptionInput placeholder="Введите описание"></S.DescriptionInput>
+            <StyledInput placeholder="Введите описание"></StyledInput>
             <S.SmallHeadline>
               <p>Категория</p>
             </S.SmallHeadline>
@@ -111,12 +124,12 @@ const Expenses = () => {
             <S.SmallHeadline>
               <p>Дата</p>
             </S.SmallHeadline>
-            <S.DataInput placeholder="Введите дату"></S.DataInput>
+            <StyledInput placeholder="Введите дату"></StyledInput>
             <S.SmallHeadline>
               <p>Сумма</p>
             </S.SmallHeadline>
-            <S.SumInput placeholder="Введите сумму"></S.SumInput>
-            <S.AddButton>Добавить новый расход</S.AddButton>
+            <StyledInput placeholder="Введите сумму"></StyledInput>
+            <AddButton>Добавить новый расход</AddButton>
           </S.NewExpense>
         </S.ExpensesBlock>
       </div>

@@ -21,7 +21,7 @@ const Header = () => {
         <S.HeaderBlock>
           <S.HeaderLogo>
             <Link to="/">
-              <img src="/images/Logo.png" alt="logo" />
+              <img src="/images/Logo.svg" alt="logo" />
             </Link>
           </S.HeaderLogo>
 

@@ -127,17 +127,10 @@ export const SmallHeadline = styled.div`
   color: #000000;
   padding-bottom: 16px;
 `;
-export const DescriptionInput = styled.input`
-  width: 100%;
-  height: 38.63px;
-  border-radius: 6px;
-  border: 0.5px solid #999999;
-  margin-bottom: 24px;
-  padding: 12px;
-`;
+
 export const Categories = styled.div`
   display: flex;
-  column-gap: 6px;
+  gap: 6px;
   flex-wrap: wrap;
   margin-bottom: 24px;
 `;
@@ -160,36 +153,4 @@ export const CategoriesName = styled.button`
     align-items: left;
     color: #000000;
   }
-`;
-export const DataInput = styled.input`
-  width: 100%;
-  height: 38.63px;
-  border-radius: 6px;
-  border: 0.5px solid #999999;
-  margin-bottom: 24px;
-  padding: 12px;
-`;
-export const SumInput = styled.input`
-  width: 100%;
-  height: 38.63px;
-  border-radius: 6px;
-  border: 0.5px solid #999999;
-  margin-bottom: 24px;
-  padding: 12px;
-`;
-export const AddButton = styled.button`
-  width: 100%;
-  height: 39px;
-  border-radius: 6px;
-  background: #7334ea;
-  font-family: "Montserrat";
-  font-style: normal;
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 14px;
-  white-space: nowrap;
-  text-align: center;
-  align-items: center;
-  color: #ffffff;
-  border: none;
 `;

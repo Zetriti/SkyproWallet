@@ -2,14 +2,15 @@ import React from "react";
 import * as S from "./Analysis.styled";
 import Calendar from "../../components/Calendar/Calendar";
 import VerticalBarChart from "../../components/VerticalBarChart/VerticalBarChart";
+import { PageTitle } from "../../components/Styles/shared.styled";
 
 const Analysis = () => {
   return (
     <S.AnalysisWrapper>
       <div className="container">
-        <S.AnalysisTitle>
+        <PageTitle>
           <h4>Анализ расходов</h4>
-        </S.AnalysisTitle>
+        </PageTitle>
 
         <S.AnalysisBlock>
           <S.AnalysisCalendar>
