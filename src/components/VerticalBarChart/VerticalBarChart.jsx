@@ -1,19 +1,8 @@
 import React from "react";
 import * as S from "./VerticalBarChart.styled";
 
-const VerticalBarChart = () => {
-  const total = 9581;
-  const dateLabel = "10 июля 2024";
-  const categories = [
-    { name: "Еда", amount: 3590, color: "#D9B6FF" },
-    { name: "Транспорт", amount: 1835, color: "#FFB53D" },
-    { name: "Жильё", amount: 0, color: "#6EE4FE" },
-    { name: "Развлечения", amount: 1250, color: "#B0AEFF" },
-    { name: "Образование", amount: 600, color: "#BCEC30" },
-    { name: "Другое", amount: 2306, color: "#FFB9B8" },
-  ];
-
-  const maxAmount = 3590;
+const VerticalBarChart = ({ total, dateLabel, categories }) => {
+  const maxAmount = Math.max(...categories.map((c) => c.amount), 1);
   const maxBarHeight = 328;
 
   const getBarHeight = (amount) => {
@@ -29,7 +18,6 @@ const VerticalBarChart = () => {
           Расходы за <span>{dateLabel}</span>
         </S.DateRange>
       </S.Header>
-
       <S.BarsWrapper>
         {categories.map((cat) => (
           <S.BarColumn key={cat.name}>

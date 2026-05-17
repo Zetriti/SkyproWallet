@@ -134,23 +134,35 @@ export const Categories = styled.div`
   flex-wrap: wrap;
   margin-bottom: 24px;
 `;
+// Expenses.styled.js
 export const CategoriesName = styled.button`
   padding: 8px 20px 8px 46px;
   border-radius: 30px;
-  background: #f4f5f6;
+  background: ${({ $isActive }) => ($isActive ? "#F1EBFD" : "#F4F5F6")};
   border: none;
   position: relative;
+  cursor: pointer;
+  color: ${({ $isActive }) => ($isActive ? "#7334EA" : "#000000")};
+  transition: all 0.2s;
 
   p {
-    height: 15px;
+    margin: 0;
     font-family: "Montserrat";
-    font-style: normal;
     font-weight: 400;
     font-size: 12px;
     line-height: 14px;
     white-space: nowrap;
-    text-align: left;
-    align-items: left;
-    color: #000000;
+    color: inherit;
+  }
+
+  img {
+    position: absolute;
+    top: 8.5px;
+    left: 20px;
+    filter: ${({ $isActive }) =>
+      $isActive
+        ? "invert(19%) sepia(97%) saturate(2823%) hue-rotate(261deg) brightness(92%) contrast(92%)"
+        : "none"};
+    transition: filter 0.2s;
   }
 `;
