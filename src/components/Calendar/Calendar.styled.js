@@ -106,8 +106,14 @@ export const DayCell = styled.button`
   align-items: center;
   color: #000000;
 
-  background: ${({ $isActive, $isOtherMonth }) =>
-    $isActive ? "#7334EA" : $isOtherMonth ? "transparent" : "#F4F5F6"};
+  background: ${({ $isActive, $isInRange, $isOtherMonth }) =>
+    $isActive
+      ? "#7334EA"
+      : $isInRange
+        ? "#F1EBFD"
+        : $isOtherMonth
+          ? "transparent"
+          : "#F4F5F6"};
 
   color: ${({ $isActive }) => ($isActive ? "#FFFFFF" : "#000000")};
 
