@@ -1,11 +1,7 @@
 import React, { useState, useRef } from "react";
 import * as S from "./Calendar.styled";
-
-const parseDate = (str) => {
-  if (!str) return null;
-  const [day, month, year] = str.split(".");
-  return new Date(2000 + parseInt(year), parseInt(month) - 1, parseInt(day));
-};
+import { parseDate } from "../../utils/dateUtils";
+import { monthNamesNominative } from "../../utils/constants";
 
 const formatDate = (date) => {
   const day = date.getDate().toString().padStart(2, "0");
@@ -21,7 +17,7 @@ const generateMonths = (startDate, count) => {
     date.setMonth(startDate.getMonth() + i);
     const year = date.getFullYear();
     const month = date.getMonth();
-    const label = date.toLocaleString("ru", { month: "long", year: "numeric" });
+    const label = `${monthNamesNominative[month]} ${year}`;
     months.push({ year, month, label });
   }
   return months;
@@ -46,7 +42,50 @@ const getInitialMonths = () => {
   const startMonth = new Date(today.getFullYear(), today.getMonth());
   return generateMonths(startMonth, 6);
 };
-const Calendar = ({ startDate, endDate, onRangeChange }) => {
+
+const loadMoreMonthsDown = (displayMonths, setDisplayMonths, setIsLoading) => {
+  const lastMonth = displayMonths[displayMonths.length - 1];
+  const nextStart = new Date(lastMonth.year, lastMonth.month + 1, 1);
+  setIsLoading(true);
+  setTimeout(() => {
+    setDisplayMonths((prev) => [...prev, ...generateMonths(nextStart, 3)]);
+    setIsLoading(false);
+  }, 100);
+};
+
+const loadMoreMonthsUp = (
+  displayMonths,
+  setDisplayMonths,
+  scrollRef,
+  setIsLoading,
+) => {
+  const firstMonth = displayMonths[0];
+  const prevStart = new Date(firstMonth.year, firstMonth.month - 3, 1);
+  setIsLoading(true);
+  setTimeout(() => {
+    const newMonths = generateMonths(prevStart, 3);
+    setDisplayMonths((prev) => [...newMonths, ...prev]);
+    setTimeout(() => {
+      if (scrollRef.current) {
+        const prevHeight = scrollRef.current.scrollHeight;
+        requestAnimationFrame(() => {
+          const newHeight = scrollRef.current.scrollHeight;
+          scrollRef.current.scrollTop += newHeight - prevHeight;
+        });
+      }
+    }, 50);
+    setIsLoading(false);
+  }, 100);
+};
+
+const Calendar = ({
+  startDate,
+  endDate,
+  onRangeChange,
+  title = "Период",
+  showBackButton = false,
+  onBack,
+}) => {
   const scrollRef = useRef(null);
   const [displayMonths, setDisplayMonths] = useState(getInitialMonths);
   const [isLoading, setIsLoading] = useState(false);
@@ -55,31 +94,14 @@ const Calendar = ({ startDate, endDate, onRangeChange }) => {
     if (!scrollRef.current || isLoading) return;
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
     if (scrollTop + clientHeight >= scrollHeight - 50) {
-      const lastMonth = displayMonths[displayMonths.length - 1];
-      const nextStart = new Date(lastMonth.year, lastMonth.month + 1, 1);
-      setIsLoading(true);
-      setTimeout(() => {
-        setDisplayMonths((prev) => [...prev, ...generateMonths(nextStart, 3)]);
-        setIsLoading(false);
-      }, 100);
+      loadMoreMonthsDown(displayMonths, setDisplayMonths, setIsLoading);
     } else if (scrollTop <= 50) {
-      const firstMonth = displayMonths[0];
-      const prevStart = new Date(firstMonth.year, firstMonth.month - 3, 1);
-      setIsLoading(true);
-      setTimeout(() => {
-        const newMonths = generateMonths(prevStart, 3);
-        setDisplayMonths((prev) => [...newMonths, ...prev]);
-        setTimeout(() => {
-          if (scrollRef.current) {
-            const prevHeight = scrollRef.current.scrollHeight;
-            requestAnimationFrame(() => {
-              const newHeight = scrollRef.current.scrollHeight;
-              scrollRef.current.scrollTop += newHeight - prevHeight;
-            });
-          }
-        }, 50);
-        setIsLoading(false);
-      }, 100);
+      loadMoreMonthsUp(
+        displayMonths,
+        setDisplayMonths,
+        scrollRef,
+        setIsLoading,
+      );
     }
   };
 
@@ -115,19 +137,18 @@ const Calendar = ({ startDate, endDate, onRangeChange }) => {
   return (
     <S.CalendarContainer>
       <S.CalendarHeader>
-        <S.CalendarTitle>Период</S.CalendarTitle>
+        {showBackButton && onBack && (
+          <S.BackButton onClick={onBack}>
+            <img src="/images/Arrow-left.svg" alt="Назад" />
+          </S.BackButton>
+        )}
+        <S.CalendarTitle>{title}</S.CalendarTitle>
       </S.CalendarHeader>
-
       <S.StickyWeekdays>
-        <S.Weekday>пн</S.Weekday>
-        <S.Weekday>вт</S.Weekday>
-        <S.Weekday>ср</S.Weekday>
-        <S.Weekday>чт</S.Weekday>
-        <S.Weekday>пт</S.Weekday>
-        <S.Weekday>сб</S.Weekday>
-        <S.Weekday>вс</S.Weekday>
+        {["пн", "вт", "ср", "чт", "пт", "сб", "вс"].map((day) => (
+          <S.Weekday key={day}>{day}</S.Weekday>
+        ))}
       </S.StickyWeekdays>
-
       <S.ScrollableBody ref={scrollRef} onScroll={handleScroll}>
         {displayMonths.map(({ year, month, label }) => {
           const days = getDaysForMonth(year, month);
@@ -172,7 +193,6 @@ const Calendar = ({ startDate, endDate, onRangeChange }) => {
         })}
         {isLoading && <div>Загрузка...</div>}
       </S.ScrollableBody>
-
       <S.CalendarFooter>
         <S.SelectedPeriodText>
           {startDate && !endDate && `Начало: ${startDate}`}

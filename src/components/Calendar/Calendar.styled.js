@@ -9,10 +9,19 @@ export const CalendarContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  @media (max-width: 495px) {
+    border-radius: 0px;
+  }
 `;
 
 export const CalendarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
   padding: 32px 32px 0 32px;
+  @media (max-width: 495px) {
+    padding: 0px 0px 0px 16px;
+  }
 `;
 
 export const CalendarTitle = styled.h4`
@@ -33,6 +42,9 @@ export const StickyWeekdays = styled.div`
   top: 0;
   z-index: 2;
   margin-bottom: 24px;
+  @media (max-width: 495px) {
+    padding: 24px 16px 7px 16px;
+  }
 `;
 
 export const Weekday = styled.div`
@@ -54,6 +66,10 @@ export const ScrollableBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+
+  @media (max-width: 495px) {
+    padding: 0px 16px 16px 16px;
+  }
 
   &::-webkit-scrollbar {
     width: 6px;
@@ -139,5 +155,21 @@ export const SelectedPeriodText = styled.p`
 
   span {
     color: #000000;
+  }
+`;
+
+export const BackButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+
+  img {
+    width: 12px;
+    height: 12px;
   }
 `;

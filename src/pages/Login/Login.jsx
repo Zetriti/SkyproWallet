@@ -2,39 +2,41 @@ import React, { useContext, useState } from "react";
 import * as S from "../../components/styles/shared.styled";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-import { signIn } from "../../servives/auth";
+import { signIn } from "../../services/auth";
 
 const Login = () => {
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [apiError, setApiError] = useState("");
-  const [errors, setErrors] = useState({ email: false, password: false });
+  const [submitted, setSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState({
+    email: false,
+    password: false,
+  });
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
-  const validateForm = () => {
-    const newErrors = {
-      email: !email.trim() || !validateEmail(email),
-      password: !password.trim(),
-    };
-    setErrors(newErrors);
-    return !newErrors.email && !newErrors.password;
-  };
-
-  const getValidationMessage = () => {
-    if (errors.email || errors.password) {
-      return "Введенные вами данные не распознаны. Проверьте свой логин и пароль и повторите попытку входа.";
-    }
-    return "";
-  };
+  const isEmailValid = email.trim() && validateEmail(email);
+  const isPasswordValid = password.trim();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setApiError("");
-    if (!validateForm()) return;
+
+    const newErrors = {
+      email: !isEmailValid,
+      password: !isPasswordValid,
+    };
+    setFieldErrors(newErrors);
+    setSubmitted(true);
+
+    if (newErrors.email || newErrors.password) {
+      return;
+    }
 
     setLoading(true);
     try {
@@ -45,42 +47,69 @@ const Login = () => {
         login(token);
         navigate("/expenses");
       } else {
-        setApiError(
-          "Введенные вами данные не распознаны. Проверьте свой логин и пароль и повторите попытку входа.",
-        );
+        setApiError("Неверный ответ сервера");
+        setSubmitted(false);
+        setFieldErrors({ email: false, password: false });
       }
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
       setApiError(
-        "Введенные вами данные не распознаны. Проверьте свой логин и пароль и повторите попытку входа.",
+        "Введенные вами данные не распознаны. Проверьте логин и пароль.",
       );
+      setSubmitted(false);
+      setFieldErrors({ email: false, password: false });
     } finally {
       setLoading(false);
     }
   };
 
-  const errorMessage = apiError || getValidationMessage();
+  const handleFieldChange = (field, value) => {
+    if (field === "email") setEmail(value);
+    if (field === "password") setPassword(value);
+    setApiError("");
+    setSubmitted(false);
+    setFieldErrors({ email: false, password: false });
+  };
+
+  const errorMessage =
+    apiError ||
+    (submitted && (fieldErrors.email || fieldErrors.password)
+      ? "Упс! Введенные вами данные некорректны. Введите данные корректно и повторите попытку."
+      : "");
+
+  const isButtonDisabled =
+    loading || (submitted && (fieldErrors.email || fieldErrors.password));
 
   return (
     <S.FormContainer>
       <S.Form onSubmit={handleSubmit}>
         <S.FormTitle>Вход</S.FormTitle>
-        <S.Input
-          type="email"
-          placeholder="Эл. почта"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          $error={errors.email}
-        />
-        <S.Input
-          type="password"
-          placeholder="Пароль"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          $error={errors.password}
-        />
+
+        <S.InputWrapper>
+          <S.Input
+            type="email"
+            placeholder="Эл. почта"
+            value={email}
+            onChange={(e) => handleFieldChange("email", e.target.value)}
+            $error={fieldErrors.email}
+          />
+          {fieldErrors.email && <S.ErrorAsterisk>*</S.ErrorAsterisk>}
+        </S.InputWrapper>
+
+        <S.InputWrapper>
+          <S.Input
+            type="password"
+            placeholder="Пароль"
+            value={password}
+            onChange={(e) => handleFieldChange("password", e.target.value)}
+            $error={fieldErrors.password}
+          />
+          {fieldErrors.password && <S.ErrorAsterisk>*</S.ErrorAsterisk>}
+        </S.InputWrapper>
+
         {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
-        <S.Button type="submit" disabled={loading}>
+
+        <S.Button type="submit" disabled={isButtonDisabled}>
           {loading ? "Вход..." : "Войти"}
         </S.Button>
 
