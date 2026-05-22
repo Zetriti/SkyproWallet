@@ -13,6 +13,8 @@ const Header = () => {
   const [searchParams] = useSearchParams();
   const isExpensesPage = location.pathname === "/expenses";
   const isAnalysisPage = location.pathname === "/analysis";
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/register";
   const mobileActiveLabel = isExpensesPage
     ? searchParams.get("view") === "new"
       ? "Новый расход"
@@ -55,6 +57,22 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false);
   }, [location]);
+
+  if (isAuthPage) {
+    return (
+      <S.HeaderWrapper>
+        <div className="container">
+          <S.HeaderBlock>
+            <S.HeaderLogo>
+              <Link to="/">
+                <img src="/images/Logo.svg" alt="logo" />
+              </Link>
+            </S.HeaderLogo>
+          </S.HeaderBlock>
+        </div>
+      </S.HeaderWrapper>
+    );
+  }
 
   return (
     <S.HeaderWrapper>

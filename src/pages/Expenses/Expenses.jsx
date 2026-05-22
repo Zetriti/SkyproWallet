@@ -250,7 +250,10 @@ const Expenses = () => {
                 <S.SmallHeadline>
                   Описание{" "}
                   {errors.description && (
-                    <S.ErrorAsteriskHeader> *</S.ErrorAsteriskHeader>
+                    <S.ErrorAsteriskHeader>
+                      {" "}
+                      * {errors.description}
+                    </S.ErrorAsteriskHeader>
                   )}
                 </S.SmallHeadline>
                 <StyledInput
@@ -264,7 +267,10 @@ const Expenses = () => {
                 <S.SmallHeadline>
                   Категория{" "}
                   {errors.category && (
-                    <S.ErrorAsteriskHeader> *</S.ErrorAsteriskHeader>
+                    <S.ErrorAsteriskHeader>
+                      {" "}
+                      * {errors.category}
+                    </S.ErrorAsteriskHeader>
                   )}
                 </S.SmallHeadline>
                 <S.Categories>
@@ -288,7 +294,10 @@ const Expenses = () => {
                 <S.SmallHeadline>
                   Дата{" "}
                   {errors.date && (
-                    <S.ErrorAsteriskHeader> *</S.ErrorAsteriskHeader>
+                    <S.ErrorAsteriskHeader>
+                      {" "}
+                      * {errors.date}
+                    </S.ErrorAsteriskHeader>
                   )}
                 </S.SmallHeadline>
                 <StyledInput
@@ -303,7 +312,10 @@ const Expenses = () => {
                 <S.SmallHeadline>
                   Сумма{" "}
                   {errors.sum && (
-                    <S.ErrorAsteriskHeader> *</S.ErrorAsteriskHeader>
+                    <S.ErrorAsteriskHeader>
+                      {" "}
+                      * {errors.sum}
+                    </S.ErrorAsteriskHeader>
                   )}
                 </S.SmallHeadline>
                 <StyledInput
