@@ -7,6 +7,9 @@ export const FormContainer = styled.div`
   align-items: center;
   height: 100vh;
   background-color: #f4f5f6;
+  @media screen and (max-width: 495px) {
+    background-color: #ffffff;
+  }
 `;
 
 export const Form = styled.form`
@@ -16,6 +19,13 @@ export const Form = styled.form`
   width: 100%;
   max-width: 400px;
   box-shadow: 0px 20px 67px -12px rgba(0, 0, 0, 0.13);
+
+  @media screen and (max-width: 495px) {
+    max-width: 100%;
+    height: 100%;
+    border-radius: 0;
+    padding: 150px 16px;
+  }
 `;
 
 export const FormTitle = styled.h2`
@@ -23,8 +33,8 @@ export const FormTitle = styled.h2`
   margin-bottom: 24px;
   font-style: normal;
   font-weight: 700;
-  font-size: 20px;
-  line-height: 30px;
+  font-size: 24px;
+  line-height: 29px;
   color: #000000;
 `;
 
@@ -36,6 +46,9 @@ export const PageTitle = styled.h4`
   color: #000000;
   margin-bottom: 32px;
   margin-top: 36px;
+  @media (max-width: 495px) {
+    display: none;
+  }
 `;
 
 export const CardTitle = styled.div`
@@ -47,24 +60,46 @@ export const CardTitle = styled.div`
   padding: 32px 32px 0 32px;
 `;
 
+export const InputWrapper = styled.div`
+  position: relative;
+  margin-bottom: 12px;
+`;
+
 export const Input = styled.input`
   font-family: "Montserrat", sans-serif;
-  font-style: normal;
   font-weight: 400;
   font-size: 12px;
   line-height: 14px;
   width: 100%;
   padding: 12px;
-  margin-bottom: 12px;
-  border: 0.5px solid ${({ $error }) => ($error ? "#f84d4d" : "#999999")};
   border-radius: 6px;
   background-color: #ffffff;
+  border: 0.5px solid #999999;
   color: #000000;
+  transition: all 0.2s;
+  outline: none;
+
+  ${({ $error }) =>
+    $error &&
+    `
+    background-color: #FFEBEB;
+    border-color: #F25050;
+  `}
 
   &:focus {
     border-color: #565eef;
-    outline: none;
   }
+`;
+
+export const ErrorAsterisk = styled.span`
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f84d4d;
+  font-size: 14px;
+  font-weight: bold;
+  pointer-events: none;
 `;
 
 export const Button = styled.button`
@@ -90,12 +125,12 @@ export const Button = styled.button`
   }
 
   &:disabled {
-    opacity: 0.6;
+    background-color: #cccccc;
     cursor: not-allowed;
+    opacity: 1;
   }
 `;
 
-// Сообщение об ошибке
 export const ErrorMessage = styled.p`
   margin-top: 10px;
   width: 100%;
@@ -123,5 +158,42 @@ export const StyledLink = styled.a`
 
   &:hover {
     color: #565eef;
+  }
+`;
+
+export const FloatingButtonContainer = styled.div`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ffffff;
+  box-shadow: 0px -20px 67px -12px rgba(0, 0, 0, 0.13);
+  padding: 20px 16px;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 496px) {
+    display: none;
+  }
+`;
+
+export const FloatingButton = styled.button`
+  width: 100%;
+  max-width: 375px;
+  height: 39px;
+  background: #7334ea;
+  border: none;
+  border-radius: 6px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:hover {
+    background: #565eef;
   }
 `;

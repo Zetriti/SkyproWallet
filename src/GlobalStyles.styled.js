@@ -7,10 +7,6 @@ export const GlobalStyles = createGlobalStyle`
   button, ._btn { cursor: pointer; outline: none; }
   ul li { list-style: none; }
 
-  @keyframes card-animation {
-    0% { height: 0; opacity: 0; }
-    100% { height: auto; opacity: 1; }
-  }
 
   main {
     height: 100%;
@@ -29,6 +25,10 @@ export const GlobalStyles = createGlobalStyle`
     min-height: 100vh;
     overflow: hidden;
     background-color: #f1f1f1;
+    @media screen and (max-width: 495px) {
+       background: #ffffff;
+    }
+    
   }
 
   .container {
@@ -37,9 +37,8 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0 auto;
     padding: 0 30px;
     @media screen and (max-width: 495px) {
-      padding: 0 16px;
+      padding: 0;
+      height: 100%;
     }
   }
-
-
 `;
